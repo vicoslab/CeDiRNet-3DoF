@@ -69,11 +69,13 @@ Dependency:
  * opencv-python
  * numpy, scipy, scikit_image, scikit_learn
 
+See `requirements.txt` for a detailed list of pip package dependencies.
+
 Recommended using Conda and installing dependencies as: 
 
 ```bash
-conda create -n=CeDiRNet python=3.8
-conda activate CeDiRNet
+conda create -n=CeDiRNet-py3.8 python=3.8
+conda activate CeDiRNet-py3.8
 
 # install correct pytorch version for CUDA, e.g., for CUDA 11.1:
 pip install torch==1.9.1+cu111 torchvision==0.10.1+cu111 torchaudio==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html

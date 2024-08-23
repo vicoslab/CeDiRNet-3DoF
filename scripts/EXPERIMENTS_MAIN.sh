@@ -7,18 +7,21 @@ source ./utils.sh
 export USE_CONDA_ENV=CeDiRNet-py3.8
 export DISABLE_X11=0
 
-centernet_filename="./models/localization_checkpoint.pth"
+centernet_filename="${ROOT_DIR}/models/localization_checkpoint.pth"
 
-########################################
-# PRETRAINING on synthetic data only
-########################################
-DO_SYNT_TRAINING=True
+DO_SYNT_TRAINING=True # step 0: pretraining on syntetic data (MuJoCo) 
+DO_REAL_TRAINING=True # step 1: training on real-world data (ViCoS Towel Dataset)
+DO_EVALUATION=True    # step 3: evaluate
 
 # assuming 4 GPUs available on localhost
 GPU_LIST=("localhost:0" "localhost:1" "localhost:2" "localhost:4")
 GPU_COUNT=${#GPU_LIST[@]}
 
-# if doing pretraining then go over all for loops
+
+########################################
+# PRETRAINING on synthetic data only
+########################################
+
 if [[ "$DO_SYNT_TRAINING" == True ]] ; then
   s=0
   for db in "mujoco"; do
@@ -50,13 +53,7 @@ wait_or_interrupt
 ########################################
 # Training on real data
 ########################################
-DO_REAL_TRAINING=True
 
-# assuming 4 GPUs available on localhost
-GPU_LIST=("localhost:0" "localhost:1" "localhost:2" "localhost:4")
-GPU_COUNT=${#GPU_LIST[@]}
-
-# if doing pretraining then go over all for loops
 if [[ "$DO_REAL_TRAINING" == True ]] ; then
   s=0
 
@@ -64,7 +61,7 @@ if [[ "$DO_REAL_TRAINING" == True ]] ; then
     export DATASET=$db
     export TRAIN_SIZE=768
     for backbone in "tu-convnext_base" "tu-convnext_large" ; do
-      for epoch in 1; do
+      for epoch in 10; do
         for depth in off on; do 
           if [[ "$depth" == off ]] ; then
             export USE_DEPTH=False
@@ -92,12 +89,6 @@ wait_or_interrupt
 ########################################
 # Evaluating on test data
 ########################################
-
-# assuming 4 GPUs available on localhost
-GPU_LIST=("localhost:0" "localhost:1" "localhost:2" "localhost:4")
-GPU_COUNT=${#GPU_LIST[@]}
-
-DO_EVALUATION=True
 
 if [[ "$DO_EVALUATION" == True ]] ; then
 

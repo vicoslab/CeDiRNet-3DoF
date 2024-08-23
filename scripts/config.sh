@@ -31,6 +31,7 @@ echo "... done - using $USE_CONDA_ENV"
 ######## INPUT/OUTPUT PATH
 ###################################################
 
+export ROOT_DIR=${SOURCE_DIR:-$(realpath "$(dirname $0)/..")}
 export SOURCE_DIR=${SOURCE_DIR:-$(realpath "$(dirname $0)/../src")}
 export OUTPUT_DIR=${OUTPUT_DIR:-$(realpath "$(dirname $0)/../exp")}
 
