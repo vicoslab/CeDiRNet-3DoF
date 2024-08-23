@@ -45,7 +45,9 @@ For benchmark on additional models see our RA-L 2024 paper.
 
 ## ViCoS Towel Dataset 
 
-**[DOWNLOAD](https://go.vicos.si/grasp-towel-db)**
+**[DOWNLOAD - Real-world samples (10GB)](https://go.vicos.si/toweldataset)**
+
+**[DOWNLOAD - Syntetic/MuJoCo samples (4GB)](https://go.vicos.si/towelmujocodataset)**
 
 We introduce ViCoS Towel Dataset for benchmarking grasping models, composed of 8000 images using:
  * 10 towels from [Household Cloth Objects](https://www.iri.upc.edu/groups/perception/ClothObjectSet/):
@@ -53,6 +55,8 @@ We introduce ViCoS Towel Dataset for benchmarking grasping models, composed of 8
  * 5 backgrounds
  * 8 lightnings
  * with and without clutter
+
+We also provide a dataset with over 12000 syntetic images generated using MuJoCo for pre-training.
 
 ![CeDiRNet-3DoF: Center Direction Network for Grasping Point Localization on Cloths!](dataset.png "CeDiRNet-3DoF")
 
