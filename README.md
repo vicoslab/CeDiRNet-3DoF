@@ -13,8 +13,8 @@
 
 ![CeDiRNet-3DoF: detections ICRA 2023!](https://box.vicos.si/skokec/rtfm/demo-videos/detection_set.png "Detections of ICRA 2023 Competition")
 
-![CeDiRNet-3DoF: detections ICRA 2023!](https://box.vicos.si/skokec/rtfm/demo-videos/krpa1.gif "Detections of ICRA 2023 Competition") ![CeDiRNet-3DoF: detections ICRA 2023!](https://box.vicos.si/skokec/rtfm/demo-videos/krpa2.gif "Detections of ICRA 2023 Competition") ![CeDiRNet-3DoF: detections ICRA 2023!](https://box.vicos.si/skokec/rtfm/demo-videos/krpa3.gif "Detections of ICRA 2023 Competition")
-
+| ![CeDiRNet-3DoF: detections ICRA 2023!](https://box.vicos.si/skokec/rtfm/demo-videos/krpa1.gif "Detections of ICRA 2023 Competition") | ![CeDiRNet-3DoF: detections ICRA 2023!](https://box.vicos.si/skokec/rtfm/demo-videos/krpa2.gif "Detections of ICRA 2023 Competition") | ![CeDiRNet-3DoF: detections ICRA 2023!](https://box.vicos.si/skokec/rtfm/demo-videos/krpa3.gif "Detections of ICRA 2023 Competition") |
+|:---:|:---:|:---:|
 ## Citation
 
 If using CeDiRNet-3DoF or ViCoS Towel Dataset please cite our paper using the following BibTeX entry:
