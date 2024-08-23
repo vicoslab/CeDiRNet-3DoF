@@ -28,12 +28,6 @@ from utils.visualize import get_visualizer
 from models.multitask_model import MultiTaskModel
 from criterions.loss_weighting.weight_methods import get_weight_method
 
-class DummyModule:
-    def __init__(self, module):
-        self.module = module
-    def __call__(self, *args, **kwargs):
-        return self.module(*args, **kwargs)
-
 
 class Trainer:
     def __init__(self, local_rank, rank_offset, world_size, args, use_distributed_data_parallel=True):
@@ -380,7 +374,6 @@ class Trainer:
        
         # define meters
         loss_meter = AverageMeter()
-        iou = AverageMeter()
 
         if optimizer:
             for param_group in optimizer.param_groups:
@@ -505,22 +498,6 @@ class Trainer:
                 self.visualizer(im, output, pred_mask, center_conv_resp, centerdir_gt, gt_centers_dict, difficult,
                                 self.log_r_fn, (i//args['display_it'])%len(im), device, self.denormalize_args)
 
-
-            # calculate IoU of pred_mask is provided
-            iou_current = []
-            if pred_mask is not None:
-                from utils.overlaps import overlap_pixels
-                for id in instances.unique():
-                    if id > 0:
-                        iou_current.append(overlap_pixels(pred_mask.eq(id),instances.eq(id)))
-                        iou.update(iou_current[-1])
-
-                if self.do_tf_logging(iter, 'iou'):
-                    self.visualizer.log_grouped_scalars_tf(grouped_dict=dict(iou=np.mean(iou_current)), iter=iter,
-                                                           name="metric")
-            else:
-                iou_current = [-1]
-
             loss_meter.update(loss.item())
 
             if tqdm_iterator is not None:
@@ -530,12 +507,6 @@ class Trainer:
                 tqdm_plots = OrderedDict(loss=loss.item())
                 
                 tqdm_plots.update({n: l.cpu().item() for n,l in loss_dict['losses_tasks' if 'losses_tasks' in loss_dict else 'losses_groups'].items()})
-                
-                if np.mean(iou_current) != -1:
-                    tqdm_plots['iou'] = iou_current
-
-                if sum(iou.count) > 0:
-                    tqdm_plots['iou_epoch'] = iou.avg
 
                 tqdm_iterator.set_postfix(**tqdm_plots)
 
@@ -585,10 +556,8 @@ class Trainer:
     def _updated_per_epoch_sample_metrics(self, stored_results, sample_indexes, losses, metrics=None):
         if len(losses) > 8:
             loss_total, loss_cls, loss_centerdir_total, loss_centers, loss_sin, loss_cos, loss_r, loss_magnitude_reg, _ = losses[:9]
-            loss_fourier = None
         else:
             loss_total, loss_cls, loss_centerdir_total, loss_centers, loss_sin, loss_cos, loss_r, loss_magnitude_reg = losses[:8]
-            loss_fourier = None
 
         for b in range(len(loss_total)):
             index = sample_indexes[b].item()
@@ -596,8 +565,6 @@ class Trainer:
             # add losses
             stored_results[index] = dict(loss=loss_total[b].sum().item(),
                                          loss_centerdir=loss_centerdir_total[b].sum().item() + loss_cls[b].sum().item())
-            if loss_fourier is not None:
-                stored_results[index]['loss_fourier'] = loss_fourier[b].sum().item() + loss_fourier[b].sum().item()
 
             if metrics is not None:
                 stored_results[index].update(metrics[b])

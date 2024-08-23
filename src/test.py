@@ -70,8 +70,7 @@ class Evaluator:
 
         dataset, centerdir_groundtruth_op = get_centerdir_dataset(args['dataset']['name'], args['dataset']['kwargs'],
                                                                   args['dataset'].get('centerdir_gt_opts') if groundtruth_loading else None)
-        # NOTE: we need centerdir_groundtruth_op only for display so if args['display']
-        #       is False we do not need centerdir_groundtruth_op at all
+
         if centerdir_groundtruth_op is not None:
             centerdir_groundtruth_op = torch.nn.DataParallel(centerdir_groundtruth_op).to(device)
 
