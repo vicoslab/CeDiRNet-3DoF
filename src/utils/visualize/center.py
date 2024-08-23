@@ -70,10 +70,6 @@ class CentersVisualizeTest(Visualizer):
                 plot_predictions(ax_i, markersize=4, markeredgewidth=1)
                 if plot_bbox_all: plot_bbox_predictions(ax, markersize=10, markeredgewidth=2)
         
-        if output is not None:
-            seed = output[0][3].cpu()
-            fig_seed, ax = self.display(seed, 'seed', force_draw=False)
-
         if centerdir_gt is not None and output is not None:
             fig_centerdir, ax = self.display([torch.abs(output[0, 2].detach().cpu() - centerdir_gt[0].cpu()),
                                               torch.abs(output[0, 1].detach().cpu() - centerdir_gt[3].cpu()),
@@ -89,8 +85,6 @@ class CentersVisualizeTest(Visualizer):
                 fig_centers.savefig(os.path.join(save_dir, '%s_1.centers.png' % base))
             if 'fig_centers_conv' in locals():
                 fig_centers_conv.savefig(os.path.join(save_dir, '%s_2.centers_conv.png' % base))
-            if 'fig_seed' in locals():
-                fig_seed.savefig(os.path.join(save_dir, '%s_3.seed.png' % base))
             if 'fig_centerdir' in locals():
                 fig_centerdir.savefig(os.path.join(save_dir, '%s_1.gt-diff.png' % base))
 
@@ -121,10 +115,6 @@ class CentersVisualizeTest(Visualizer):
                 'centers-est',
                 plot_fn=partial(plot_predictions, bbox=plot_bbox_all, predictions_args=dict(thickness=1)))
 
-        if output is not None:
-            seed = output[0][3].cpu()
-            fig_seed = self.display_opencv(seed, 'seed', plot_fn=partial(plot_predictions, bbox=plot_bbox_all))
-
         if centerdir_gt is not None and output is not None:
             fig_centerdir = self.display_opencv([torch.abs(output[0, 2].detach().cpu() - centerdir_gt[0].cpu()),
                                                  torch.abs(output[0, 1].detach().cpu() - centerdir_gt[3].cpu()),
@@ -136,8 +126,6 @@ class CentersVisualizeTest(Visualizer):
                 cv2.imwrite(os.path.join(save_dir, '%s_1.centers.png' % base), fig_centers)
             if 'fig_centers_conv' in locals():
                 cv2.imwrite(os.path.join(save_dir, '%s_2.centers_conv.png' % base), fig_centers_conv)
-            if 'fig_seed' in locals():
-                cv2.imwrite(os.path.join(save_dir, '%s_3.seed.png' % base), fig_seed)
             if 'fig_centerdir' in locals():
                 cv2.imwrite(os.path.join(save_dir, '%s_1.gt-diff.png' % base), fig_centerdir)
 
