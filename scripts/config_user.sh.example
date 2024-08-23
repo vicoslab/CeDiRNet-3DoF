@@ -1,0 +1,8 @@
+#!/bin/bash
+# DO NOT COMMIT THIS FILE !!!!
+
+# you may override config.sh variables here - for example
+# USE_CONDA_HOME=${USE_CONDA_HOME:-/home/USER/conda}
+# USE_CONDA_ENV=${USE_CONDA_ENV:-CeDiRNet}
+
+# OUTPUT_DIR=${OUTPUT_DIR:-/home/USER/Projects/CeDiRNet/exp}
