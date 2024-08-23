@@ -425,7 +425,7 @@ class Trainer:
 
             # call center prediction model
             center_output = center_model(output, **sample)
-            output, center_pred, center_heatmap, pred_mask = [center_output[k] for k in ['output','center_pred','center_heatmap','pred_mask']]
+            output, center_pred, center_heatmap = [center_output[k] for k in ['output','center_pred','center_heatmap']]
 
             # get losses
             losses = criterion(output, sample,
@@ -495,7 +495,7 @@ class Trainer:
 
                 center_conv_resp = self.center_conv_resp_fn(center_heatmap[:,0]) if center_heatmap is not None else None
 
-                self.visualizer(im, output, pred_mask, center_conv_resp, centerdir_gt, gt_centers_dict, difficult,
+                self.visualizer(im, output, None, center_conv_resp, centerdir_gt, gt_centers_dict, difficult,
                                 self.log_r_fn, (i//args['display_it'])%len(im), device, self.denormalize_args)
 
             loss_meter.update(loss.item())
