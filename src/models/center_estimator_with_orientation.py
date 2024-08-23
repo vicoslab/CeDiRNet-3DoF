@@ -103,7 +103,6 @@ class CenterOrientationEstimatorFast(CenterEstimatorFast):
 
         num_pred = center_pred.shape[0]
 
-        # WARNING: this assumes CenterEstimator is used as parent WITHOUT fourier (!!)
         if self.enable_6dof:
             sin_orientation = predictions[:, 3:6]
             cos_orientation = predictions[:, 6:9]

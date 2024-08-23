@@ -14,7 +14,6 @@ class CenterGlobalMinimizationEval:
     def __init__(self, exp_name='', exp_attributes=None, score_thr=0, tau_thr=30, center_ap_eval=None, display_best_threshold=False, append_count_to_display_name=True):
         self.exp_name = exp_name
         self.exp_attributes = exp_attributes
-        self.score_thr = score_thr
         self.tau_thr = tau_thr # max distance from grroundtruth that is still allowed to consider as true-positive
         self.metrics = dict(precision=[],recall=[],F1=[],ratio=[],TP=[],FP=[],FN=[],N=[],P=[],Re=[],mae=[],rmse=[])
         self.center_ap_eval = center_ap_eval
@@ -24,10 +23,15 @@ class CenterGlobalMinimizationEval:
         self.append_count_to_display_name = append_count_to_display_name
 
     def save_str(self):
-        return "tau=%.1f-score_thr=%.1f-center_ap_eval=%s" % (self.tau_thr, self.score_thr, str(self.center_ap_eval))
+        ret = "tau=%.1f" % self.tau_thr
+        
+        if self.center_ap_eval is not None:
+            ret = f"{ret}-center_ap_eval={str(self.center_ap_eval)}"
+        
+        return ret
 
     def get_attributes(self):
-        attrs = dict(tau=self.tau_thr, score_thr=self.score_thr)
+        attrs = dict(tau=self.tau_thr)
         if self.exp_attributes is not None:
             attrs.update(self.exp_attributes)
         return attrs

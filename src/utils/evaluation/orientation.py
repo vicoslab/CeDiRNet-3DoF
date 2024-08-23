@@ -18,9 +18,6 @@ class OrientationEval(CenterGlobalMinimizationEval):
         self.metrics.update(dict(rotation=[],translation=[], rot_x=[], rot_y=[], rot_z=[]))
         self.append_orientation_to_display_name = append_orientation_to_display_name
 
-    def save_str(self):
-        return "tau=%.1f-score_thr=%.1f-center_ap_eval=%s" % (self.tau_thr, self.score_thr, str(self.center_ap_eval))
-
 
     def add_image_prediction(self, im_name, im_index, im_shape, predictions, predictions_score, pred_angles,
                              gt_instances_ids, gt_centers_dict, gt_difficult, centerdir_gt, return_matched_gt_idx=False,
@@ -49,15 +46,11 @@ class OrientationEval(CenterGlobalMinimizationEval):
                 assert len(gt_selected) == sum(pred_gt_match_by_center[:,0] != 0)
 
                 trans_err = np.abs(predictions[pred_gt_match_by_center[:,0] != 0, :2] - gt_selected)
-                # print("trans_err", trans_err)
 
                 angle_err = []
-                err_thr = 10
 
                 num_orientation_dim = pred_angles.shape[1]
                 pred_angles = pred_angles[pred_gt_match_by_center[:,0] != 0,:]
-
-                symmetries = [6, 0, 0]
 
                 for i, c_gt in enumerate(gt_selected):
                     if pred_gt_match_by_center[i] == 0:
@@ -70,53 +63,12 @@ class OrientationEval(CenterGlobalMinimizationEval):
                     gt_angle_i = torch.rad2deg(gt_angle_i)
                     gt_angle_i += 360 * (gt_angle_i < 0).int()
 
-                    # correct GT to align with symmetries
-
                     pred_angle_i = pred_angles[i]
 
                     e = np.abs(gt_angle_i.cpu().numpy() - pred_angle_i)
-
-                    # print("start")
-                    # print("gt_angle_i", gt_angle_i.cpu().numpy())
-
-                    for j, sym in enumerate(symmetries):
-                        if sym==0:
-                            continue
-
-                        min_e = e[j]
-                        best_idx = 0
-
-                        for k in range(sym):
-                            gt_angle_i_sym = gt_angle_i[j]+k*360/sym
-                            gt_angle_i_sym%=360
-                            gt_angle_i_ = gt_angle_i.clone()
-                            gt_angle_i_[j]=gt_angle_i_sym
-                            # print("pred_angle_i", pred_angle_i)
-                            # print("gt_angle_i_sym", gt_angle_i_sym)
-                            e_ = np.abs(gt_angle_i_.cpu().numpy() - pred_angle_i)
-                            is_e_over_180 = (e_ > 180).astype(np.int32)
-                            e_ = is_e_over_180 * 360 - (is_e_over_180*2-1) * e_
-                            # print("e_", e_)
-                            if e_[j]<min_e:
-                                min_e = e_[j]
-                                best_idx = k
-
-                        gt_angle_i[j]+=best_idx*(360/sym)
-                        gt_angle_i[j]%=360
-
-                    e = np.abs(gt_angle_i.cpu().numpy() - pred_angle_i)                    
+                    
                     is_e_over_180 = (e > 180).astype(np.int32)
                     e = is_e_over_180 * 360 - (is_e_over_180*2-1) * e # the same as: e = 360 - e if e > 180 else e
-
-                    # print("gt_angle_i", gt_angle_i.cpu().numpy())
-                    # print("pred_angle_i", pred_angle_i)
-                    # print("e", e)
-                    # print()
-
-                    # if e>err_thr:
-                    # 	print(c_pred)
-                    # 	print(c_gt[:2], c_pred[:2])
-                    # 	print(f"GT angle: {gt_angle}, pred angle: {pred_angle}, error: {e}")
 
                     angle_err.append(e)
 
@@ -169,9 +121,6 @@ class OrientationEval(CenterGlobalMinimizationEval):
             if RE_Z:
                 RES += ", rot_z=%.4f" % RE_Z
             print(RES)
-
-        if len(self.all_detections) > 0:
-            all_detections = np.concatenate(self.all_detections,axis=0)
 
         if self.center_ap_eval is not None:
             metrics_mAP = self.center_ap_eval.calc_and_display_final_metrics(print_result, plot_result)
