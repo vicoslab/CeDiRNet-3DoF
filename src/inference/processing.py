@@ -17,11 +17,11 @@ class CenterDirProcesser:
 
     Class is able to handle the following items in the input data (sample from the dataset):
       - required keys: image, im_name, instance,
-      - optional keys: centerdir_groundtruth, ignore, center, grid_index,
+      - optional keys: centerdir_groundtruth, ignore, center
 
     The following keys are emitted for each processed/merged image:
       - as reference input data:  <ANY ORIGINAL SAMPLE DATA such as image, im_name, instance, center, centerdir_groundtruth, ignore etc. > + center_dict
-      - as processed output data: output, output_cls, resnet_features, CAM, predictions, pred_mask, pred_heatmap
+      - as processed output data: output, predictions,pred_heatmap
     '''
     def __init__(self, model, center_model_list, device=None):
         self.model = model
@@ -72,10 +72,9 @@ class CenterDirProcesser:
                 # run center detection model
                 center_output = center_model(output_batch_, **sample_)
 
-                output_batch, center_pred, center_heatmap, pred_mask = [center_output[k] for k in ['output',
-                                                                                                   'center_pred',
-                                                                                                   'center_heatmap',
-                                                                                                   'pred_mask']]
+                output_batch, center_pred, center_heatmap = [center_output[k] for k in ['output',
+                                                                                        'center_pred',
+                                                                                        'center_heatmap']]
                 # optional output
                 pred_angle = center_output.get('pred_angle')
 
@@ -130,13 +129,6 @@ class CenterDirProcesser:
                     else:
                         center_dict = None
 
-                    # if multiple output then the second one is classification
-                    has_cls = type(output) in [tuple, list]
-                    if has_cls:
-                        output, output_cls, resnet_features, CAM = output
-                    else:
-                        output_cls, resnet_features, CAM = None, None, None
-
                     # extract prediction heatmap and sorted prediction list
                     pred_heatmap = torch.relu(center_heatmap[batch_i].unsqueeze(0))
                     predictions = center_pred[batch_i][center_pred[batch_i,:,0] == 1][:,1:].cpu().numpy()
@@ -145,18 +137,6 @@ class CenterDirProcesser:
                     idx = idx[::-1]
                     predictions = predictions[idx, :]
 
-                    if pred_mask is not None:
-                        pred_mask_b = pred_mask[batch_i]
-
-                        # re-label prediction mask to ensure prediction id order matches id in mask
-                        new_pred_mask_b = torch.zeros_like(pred_mask_b)
-
-                        for new_id, old_id in enumerate(idx):
-                            new_pred_mask_b[pred_mask_b == old_id+1] = new_id+1
-                        pred_mask_b = new_pred_mask_b
-                    else:
-                        pred_mask_b = None
-
                     # sort predicted angle if present
                     pred_angle_b = pred_angle[batch_i].cpu().numpy()[idx, :] if pred_angle is not None else None
 
@@ -164,10 +144,7 @@ class CenterDirProcesser:
 
                     # simply return all input and output data
                     output_dict = dict(output=output,
-                                       output_cls=output_cls,
-                                       resnet_features=resnet_features, CAM=CAM,
                                        predictions=predictions,
-                                       pred_mask=pred_mask_b,
                                        pred_heatmap=pred_heatmap,
                                        pred_angle=pred_angle_b,
                                        center_model_name=center_model_name)

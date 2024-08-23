@@ -137,18 +137,9 @@ class CenterEstimator(nn.Module):
 
             if len(res) > 0:
                 selected_centers = np.ones(len(res),dtype=bool)
-                pred_mask = []
-                res_scores = []
                 for b in range(len(input)):
                     batch_idx = res[:, 0] == b
                     centers_b = res[batch_idx][:, [2, 1, 4]]
-
-                    scores = [np.ones((len(centers_b))) for _ in [0,1,2,3]]
-
-                    voted_mask = torch.zeros_like(mask[b,0])
-
-                    # save scores for later merging
-                    res_scores.append((batch_idx, np.stack(scores,axis=1)))
 
                     if ignore is not None and len(res) > 0:
                         # consider all ignore flags except DIFFICULT and padding (8==DIFFICULT; 64,128=PADDING) one which will be handled by evaluation
@@ -156,32 +147,14 @@ class CenterEstimator(nn.Module):
 
                         if not np.all(ignored_pred):
                             selected_centers[batch_idx] *= ignored_pred
-
-                            ignored_pred_idx = np.where(ignored_pred)[0]
-                            new_voted_mask = torch.zeros_like(voted_mask)
-                            for new_id, old_id in enumerate(ignored_pred_idx):
-                                new_voted_mask[voted_mask == old_id + 1] = new_id + 1
-                            voted_mask = new_voted_mask
-
-                    pred_mask.append(voted_mask)
-
-                # combine all scores and concatenate them to res
-                if len(res_scores) > 0:
-                    max_cols = np.max([scores.shape[1] for _,scores in res_scores])
-                    res_scores_mat = np.ones(shape=(len(res), max_cols))
-
-                    for batch_idx,scores in res_scores:
-                        res_scores_mat[batch_idx,:scores.shape[1]] = scores
-
-                    res = np.concatenate((res,res_scores_mat), axis=1)
+                            
 
                 center_pred = res[selected_centers, :]
                 pred_mask = torch.stack(pred_mask, dim=0)
             else:
                 center_pred = res
-                pred_mask = torch.zeros_like(cls_mask[:,0], dtype=torch.int)
 
-            # res = (batch, x,y, mask_score, center_score, hough_energy_score, edge_to_area_ratio_of_mask_score)
+            # res = (batch, x,y, mask_score, center_score)
             # voted_mask = 2D array of integers that match (1-based) index of centers in res
             # conv_resp_out = list of 2D array with various respones (conv2d for center response, voted_mask, M, etc)
 
@@ -190,7 +163,7 @@ class CenterEstimator(nn.Module):
         # convert center prediction list to tensor of fixed size so that it can be merger from parallel GPU processings
         center_pred = self._pack_center_predictions(center_pred, batch_size=len(input))
 
-        return dict(output=input, center_pred=center_pred, center_heatmap=conv_resp, pred_mask=pred_mask)
+        return dict(output=input, center_pred=center_pred, center_heatmap=conv_resp)
 
     @staticmethod
     def _get_edges_to_area_score(res, voted_mask):

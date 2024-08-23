@@ -181,12 +181,7 @@ class Evaluator:
                 # Scoring function based on provided list of scores that we want to use
 
                 # index should match what is returned as scores in predictions (after x,y locations)
-                scoring_index = {'mask': 0, 'center': 1, 'hough_energy': 2, 'edge_to_area_ratio_of_mask': 3,
-                                 'avg(mask_pix)': 4, 'avg(hough_pix)': 5, 'avg(projected_dist_pix)': 6,
-                                 'avg(mask_dir)': 7, 'std(mask_dir)': 8, 'orientation_confidence': 7 }
-
-                # scoring function that extracts requested scores and multiply them to get the final score
-                # scoring_fn = lambda scores: np.multiply([scores[:,scoring_index[t]] for t in args_eval['final_score_combination']])
+                scoring_index = {'mask': 0, 'center': 1, 'orientation_confidence': 2 }
 
                 # function that creates new dictionaries by combinting every value in dictionary if value is a list of values
                 def combitorial_args_fn(X):
