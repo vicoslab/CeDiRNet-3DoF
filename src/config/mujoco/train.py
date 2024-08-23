@@ -108,8 +108,11 @@ args = dict(
 		),
 
 		'batch_size': 4,
+		
+		# hard example disabled
 		'hard_samples_size': 0,
 		'hard_samples_selected_min_percent':0.1,
+
 		'workers': 4,
 		'shuffle': True,
 	}, 
@@ -138,7 +141,7 @@ args = dict(
 
 	),
 	center_model=dict(
-		name='PolarVotingCentersMultiscale',
+		name='CenterEstimator',
 		kwargs=dict(
 			# use vector magnitude as mask instead of regressed mask
 			use_magnitude_as_mask=False,
@@ -205,14 +208,9 @@ args = dict(
 		)
 	),
 	loss_w={
-		'w_inst': 1,
-		'w_var': 1,
-		'w_seed': 1,
-		'w_cls': 1,
 		'w_r': 1,
 		'w_cos': 1,
 		'w_sin': 1,
-		'w_magnitude': 1,
 		'w_cent': 0.1,
 		'w_orientation': 1,
 	},
