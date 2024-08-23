@@ -9,10 +9,7 @@ from utils.utils import GaussianLayer
 
 
 class CenterDirGroundtruth(nn.Module):
-    def __init__(self, centerdir_gt_cache=None, extend_instance_mask_weights=0, MAX_NUM_CENTERS=100,
-                 backbone_output_cache=None, load_cached_backbone_output_probability=0,
-                 use_cached_backbone_output=False, save_cached_backbone_output_only=False,
-                 add_synthetic_output=False, ignore_instance_mask_and_use_closest_center=False,
+    def __init__(self, MAX_NUM_CENTERS=100, ignore_instance_mask_and_use_closest_center=False,
                  center_ignore_px=3, center_gt_blur=2, skip_gt_center_mask_generate=False):
         super().__init__()
 

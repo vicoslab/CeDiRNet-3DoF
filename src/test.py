@@ -435,7 +435,7 @@ class Evaluator:
                         predictions_score = []
                         pred_angle = []
 
-                    # 3. do evaluation and visualization for every evaluator in center_eval and instance_eval
+                    # 3. do evaluation and visualization for every evaluator in center_eval and orientation_eval
 
                     # collected metrics for per-center evaluation
                     for c_eval in center_eval:

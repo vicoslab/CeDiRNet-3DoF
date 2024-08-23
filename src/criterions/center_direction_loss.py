@@ -17,14 +17,8 @@ from criterions.center_localization_loss import CenterLocalizationLoss
 class CenterDirectionLoss(nn.Module):
 
     def __init__(self, model, num_vector_fields=3,
-                 no_instance_loss=True, cls_no_loss=False, enable_centerdir_loss=True, enable_cls_loss=True,
-                 regression_loss=None, cls_loss=None, magnitude_regularization=None,
-                 cls_l1_loss=False, cls_hinge_loss=False, regression_l1_loss=False, regression_hinge_loss=False, regression_hinge_loss_eps=0.0,
-                 cls_instance_weighted=True, centerdir_instance_weighted=True, loss_weighted_by_distance_gauss=0,
-                 use_instance_mask_iou_weight=False, instance_mask_iou_only_fp=False, instance_mask_iou_ignore_tp=False,
-                 instance_mask_iou_include_fn=False,
-                 num_hard_negatives=0, hard_negatives_center_mask=30, hard_negatives_as_single_instance=False,
-                 extend_instance_mask_weights=False, extend_instance_mask_as_hard_negative=False,
+                 no_instance_loss=True, enable_centerdir_loss=True,
+                 regression_loss=None, centerdir_instance_weighted=True, loss_weighted_by_distance_gauss=0,
                  use_log_r=True, use_log_r_base='exp',
                  learnable_center_est=False, learnable_center_loss='l1',
                  learnable_center_ignore_negative_gradient=False, learnable_center_fp_threshold=0.1,

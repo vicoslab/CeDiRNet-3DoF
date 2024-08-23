@@ -7,8 +7,6 @@ from models.center_augmentator import CenterAugmentator
 
 from models.localization.centers import Conv1dMultiscaleLocalization, Conv2dDilatedLocalization
 
-from models.center_groundtruth import CenterDirGroundtruth
-
 import torch.nn.functional as F
 
 class CenterEstimator(nn.Module):
