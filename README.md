@@ -32,7 +32,7 @@ If using CeDiRNet-3DoF or ViCoS Towel Dataset please cite our paper using the fo
 | CeDiRNet-3DoF | ConvNext-L | RGB-D | ViCoS Towel Dataset + MuJoCo | 81.4% | [MODEL](https://box.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-L-RGB-D.pth) |
 | CeDiRNet-3DoF | ConvNext-B | RGB | ViCoS Towel Dataset + MuJoCo | 78.0% | [MODEL](https://box.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-B-RGB.pth) |
 | CeDiRNet-3DoF | ConvNext-B | RGB-D | ViCoS Towel Dataset + MuJoCo | 80.8% | [MODEL](https://box.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-B-RGB-D.pth) |
-| CeDiRNet-3DoF | Localization network only | RGB | Syntetic | - |[MODEL](https://box.vicos.si/skokec/rtfm/CeDiRNet-3DoF/localization_checkpoint.pth) |
+| CeDiRNet-3DoF | Localization network only | RGB | Synthetic | - |[MODEL](https://box.vicos.si/skokec/rtfm/CeDiRNet-3DoF/localization_checkpoint.pth) |
 | [DINO](https://github.com/IDEA-Research/DINO) | ConvNext-B | RGB | ViCoS Towel Dataset + MuJoCo | 72.7% | - |
 | [DeformDETR](https://github.com/fundamentalvision/Deformable-DETR) | ConvNext-B | RGB | ViCoS Towel Dataset + MuJoCo | 71.6% | - |
 | [Mask R-CNN](https://github.com/facebookresearch/detectron2) | ResNext101 | RGB | ViCoS Towel Dataset + MuJoCo | 78.3% | - |
@@ -47,27 +47,25 @@ For benchmark on additional models see our RA-L 2024 paper.
 
 **[DOWNLOAD - Real-world samples (10GB)](https://go.vicos.si/toweldataset)**
 
-**[DOWNLOAD - Syntetic/MuJoCo samples (4GB)](https://go.vicos.si/towelmujocodataset)**
+**[DOWNLOAD - Synthetic/MuJoCo samples (4GB)](https://go.vicos.si/towelmujocodataset)**
 
-We introduce ViCoS Towel Dataset for benchmarking grasping models, composed of 8000 images using:
+We introduce ViCoS Towel Dataset for benchmarking grasping models, composed of 8000 RGB-D images using:
  * 10 towels from [Household Cloth Objects](https://www.iri.upc.edu/groups/perception/ClothObjectSet/):
  * 10 different configurations of towels
  * 5 backgrounds
  * 8 lightnings
  * with and without clutter
 
-We also provide a dataset with over 12000 syntetic images generated using MuJoCo for pre-training.
+We also provide a dataset with over 12000 synthetic images generated using MuJoCo for pre-training.
 
 ![CeDiRNet-3DoF: Center Direction Network for Grasping Point Localization on Cloths!](dataset.png "CeDiRNet-3DoF")
-
-Part of the dataset consists of additional 12000 syntetic images generated using MuJoCo:
 
 ## Installation
 
 Dependency:
  * Python >= 3.8
  * PyTorch >= 1.9
- * [segmentation_models_pytorch](https://github.com/qubvel/segmentation_models.pytorch) 
+ * [segmentation_models_pytorch](https://github.com/qubvel/segmentation_models.pytorch) and [timm](https://pypi.org/project/timm/)
  * opencv-python
  * numpy, scipy, scikit_image, scikit_learn
 
@@ -110,30 +108,37 @@ python infer.py --input_folder /path/to/images --img_pattern "*.png" --output_fo
 #                         (will override one from model)
 ```
 
-Pre-train on syntetic MuJoCo data:
+Pre-train on synthetic MuJoCo data:
 
 ```bash
+
+# move to src folder
+cd src 
+
 export DATASET=mujoco
-export MUJOCO_DIR="/path/to/MUJOCO_DIR/in/ViCoSTowelDataset/"  # path to MuJoCo images from ViCoS Towel dataset
-export OUTPUT_DIR="../exp"                                     # optionally provided path to output dir used in src/config/mujoco/train.py (defaults to '../exp')
+export MUJOCO_DIR="../dataset/MuJoCo/"  # path to MuJoCo images from ViCoS Towel dataset
+export OUTPUT_DIR="../exp"              # optionally provided path to output dir used in src/config/mujoco/train.py (defaults to '../exp')
 export USE_DEPTH=False 
 
-# download localization network:
-wget https://box.vicos.si/skokec/rtfm/localization_checkpoint.pth
+# download the localization network to ./models/ folder
+./scripts/download_localization_model.sh
 
 python train.py --config model.kwargs.backbone=tu-convnext_large \
                          train_dataset.batch_size=8 \
                          train_dataset.hard_samples_size=16 \                         
-                         pretrained_center_model_path="path/to/localization_checkpoint.pth" \
+                         pretrained_center_model_path="../models/localization_checkpoint.pth" \
                          display=True
 ```
 
 For training and evaluation on ViCoS Towel Dataset:
 
 ```bash
-export DATASET=vicos_towel                                   # defines which config to use (see src/config/__init__.py)
-export VICOS_TOWEL_DATASET_DIR="/path/to/ViCoSTowelDataset"  # path to 'ViCoSTowelDataset' folder
-export OUTPUT_DIR="../exp"                                   # optionally provided path to output dir used in src/config/vicos_towel/*.py  (defaults to '../exp')
+# move to src folder
+cd src 
+
+export DATASET=vicos_towel                                     # defines which config to use (see src/config/__init__.py)
+export VICOS_TOWEL_DATASET_DIR="../dataset/ViCoSTowelDataset"  # path to 'ViCoSTowelDataset' folder
+export OUTPUT_DIR="../exp"                                     # optionally provided path to output dir used in src/config/vicos_towel/*.py  (defaults to '../exp')
 
 export USE_DEPTH=False  # export this env var to enable/disable using depth in the model
 export TRAIN_SIZE=768   # export this env var to define training size (will be TRAIN_SIZE x TRAIN_SIZE)
@@ -143,7 +148,7 @@ export TEST_SIZE=768    # export this env var to define testing size (will be TR
 python train.py --config model.kwargs.backbone=tu-convnext_large \
                          train_dataset.batch_size=4 \
                          n_epochs=10 \
-                         pretrained_model_path="path/to/mujoco_pretrained/checkpoint.pth" \
+                         pretrained_model_path="../models/localization_checkpoint.pth" \
                          display=True
 
 # testing on whole test set for the last epoch
