@@ -148,7 +148,6 @@ class CenterEstimator(nn.Module):
                             
 
                 center_pred = res[selected_centers, :]
-                pred_mask = torch.stack(pred_mask, dim=0)
             else:
                 center_pred = res
 
