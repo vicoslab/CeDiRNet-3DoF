@@ -9,7 +9,7 @@
 
 [Domen Tabernik](https://www.vicos.si/people/domen_tabernik/), [Jon Muhovič](https://www.vicos.si/people/jon_muhovic/), Matej Urbas, [Danije Skočaj](https://www.vicos.si/people/danijel_skocaj/)
 
-[[`Paper`]()] [[`Pre-print paper`](https://prints.vicos.si/publications/424/dense-center-direction-regression-for-object-counting-and-localization-with-point-supervision)]  [[`BibTeX`](#citation)]
+[[`Paper`]()] [[`Pre-print paper`](https://prints.vicos.si/publications/449/dense-center-direction-regression-for-object-counting-and-localization-with-point-supervision)]  [[`BibTeX`](#citation)]
 
 ![CeDiRNet-3DoF: detections ICRA 2023!](https://box.vicos.si/skokec/rtfm/demo-videos/detection_set.png "Detections of ICRA 2023 Competition")
 
@@ -23,6 +23,7 @@ If using CeDiRNet-3DoF or ViCoS Towel Dataset please cite our paper using the fo
 @article{TabernikRAL2024,
   title = {Center Direction Network for Grasping Point Localization on Cloths},
   journal = {IEEE Robotics and Automation Letters},
+  year = {2024},
   author = {Domen Tabernik and Jon Muhovič and Matej Urbas and Danijel Skočaj}
 }
 ```
