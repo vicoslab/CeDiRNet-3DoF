@@ -44,7 +44,7 @@ If using CeDiRNet-3DoF or ViCoS Towel Dataset please cite our paper using the fo
 | CeDiRNet-3DoF | Localization network only | RGB | Synthetic | - |[MODEL](https://box.vicos.si/skokec/rtfm/CeDiRNet-3DoF/localization_checkpoint.pth) |
 | [DINO](https://github.com/IDEA-Research/DINO) | ConvNext-B | RGB | ViCoS Towel Dataset + MuJoCo | 72.7% | - |
 | [DeformDETR](https://github.com/fundamentalvision/Deformable-DETR) | ConvNext-B | RGB | ViCoS Towel Dataset + MuJoCo | 71.6% | - |
-| [Mask R-CNN](https://github.com/facebookresearch/detectron2) | ResNext101 | RGB | ViCoS Towel Dataset + MuJoCo | 78.3% | - |
+| [Mask R-CNN](https://github.com/facebookresearch/detectron2) | ResNext101 | RGB | ViCoS Towel Dataset + MuJoCo | 68.3% | - |
 | [Lips et at. 2024](https://github.com/tlpss/synthetic-cloth-data) | ConvNext-B | RGB | ViCoS Towel Dataset + MuJoCo | 65.7% | - |
 | [DETR](https://github.com/facebookresearch/detr) | ConvNext-B | RGB | ViCoS Towel Dataset + MuJoCo | 61.2% | - |
 | [CenterNet++](https://arxiv.org/abs/2204.08394) | ResNext101 | RGB | ViCoS Towel Dataset + MuJoCo | 49.4% | - |
