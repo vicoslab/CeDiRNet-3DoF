@@ -1,0 +1,50 @@
+{
+  "cuda": "True",
+  "cudnn_benchmark": "False",
+  "display": "True",
+  "display_to_file_only": "True",
+  "autoadjust_figure_size": "True",
+  "score_thr_final": 0.75,
+  "num_vector_fields": 5,
+  "model": {
+    "name": "fpn",
+    "kwargs": {
+      "backbone": "tu-convnext_base",
+      "use_depth": "True",
+      "num_classes": [5, 1],      
+      "use_custom_fpn": "True",
+      "add_output_exp": "False",
+      "in_channels": 4,
+      "fpn_args": {
+        "decoder_segmentation_head_channels": 64,
+        "upsampling": 4,
+		"classes_grouping": [[0, 1, 2, 5], [3, 4]],
+		"depth_mean": 0.96, 
+        "depth_std": 0.075
+      }
+    }
+  },
+  "center_model": {
+    "name": "CenterOrientationEstimator",
+    "use_learnable_center_estimation": "True",
+    "kwargs": {
+      "use_centerdir_radii": "False",
+      "use_magnitude_as_mask":"True",
+      "local_max_thr": 0.01,
+      "local_max_thr_use_abs":"True",
+      "use_dilated_nn": "True",
+      "dilated_nn_args": {
+        "return_sigmoid": "False",
+        "inner_ch": 16,
+        "inner_kernel": 3,
+        "dilations": [
+          1, 4, 8, 12
+        ],
+        "use_centerdir_radii":"False",
+				"use_centerdir_magnitude":"False",
+				"use_cls_mask":"False"
+      },
+      "use_log_r": "False"
+    }
+  }  
+}

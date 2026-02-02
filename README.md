@@ -96,18 +96,24 @@ pip install -r requirements.txt
 
 Inference of images from folder:
 ```bash
-python infer.py --input_folder /path/to/images --img_pattern "*.png" --output_folder out/ --config src/config/config_infer.json --model path/to/checkpoint.pth
+cd src
+python infer.py --input_folder ../datasets/sample/ --img_pattern "*.jpg" --output_folder ../datasets/sample/out/ --config config/config_infer/ConvNext-L-RGB.json --model ../models/ConvNext-L-RGB.pth
 
-# Usage: infer.py [-h] [--input_folder INPUT_FOLDER] [--img_pattern IMG_PATTERN]
-#                 [--output_folder OUTPUT_FOLDER] [--config CONFIG]
-#                 [--model MODEL] [--localization_model LOCALIZATION_MODEL]
+# usage: infer.py [-h] [--input_folder INPUT_FOLDER] 
+#                 [--depth_folder DEPTH_FOLDER] [--img_pattern IMG_PATTERN] 
+#                 [--output_folder OUTPUT_FOLDER] 
+#                 [--config CONFIG] 
+#                 [--model MODEL] 
+#                 [--localization_model LOCALIZATION_MODEL]
 # 
-# Process a folder of images with CeDiRNet.
+# Process a folder of images with CeDiRNet-3DoF.
 # 
 # optional arguments:
 #   -h, --help            show this help message and exit
 #   --input_folder INPUT_FOLDER
 #                         path to folder with input images
+#   --depth_folder DEPTH_FOLDER
+#                         path to folder with depth images
 #   --img_pattern IMG_PATTERN
 #                         pattern for input images
 #   --output_folder OUTPUT_FOLDER
@@ -115,8 +121,7 @@ python infer.py --input_folder /path/to/images --img_pattern "*.png" --output_fo
 #   --config CONFIG       path to config file
 #   --model MODEL         path to model checkpoint file
 #   --localization_model LOCALIZATION_MODEL
-#                         (optional) path to localization model checkpoint file
-#                         (will override one from model)
+#                         (optional) path to localization model checkpoint file (will override one from the model)
 ```
 
 Pre-train on synthetic MuJoCo data:
