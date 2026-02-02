@@ -64,8 +64,6 @@ class ImageFolderDataset(Dataset):
             else:
                 depth_fn = os.path.splitext(self.image_list[index])[0] + ".npy"
 
-            print("loading depth from", depth_fn, os.path.exists(depth_fn))
-
             assert os.path.exists(depth_fn), f"Depth file '{depth_fn}' missing"
             depth = np.load(depth_fn)
             
@@ -87,7 +85,7 @@ class ImageFolderDataset(Dataset):
         sample = self.pad(sample)
 
         sample['image_raw'] = sample['image']
-        
+
         if self.use_depth:            
             sample['image'] = torch.cat((sample['image'], sample['depth']))
 
