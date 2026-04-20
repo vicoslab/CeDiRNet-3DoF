@@ -11,9 +11,9 @@
 
 [[`Paper`](https://doi.org/10.1109/LRA.2024.3455802)] [[`Pre-print paper`](https://prints.vicos.si/publications/449/dense-center-direction-regression-for-object-counting-and-localization-with-point-supervision)]  [[`arXiv`](https://arxiv.org/abs/2408.14456)] [[`BibTeX`](#citation)]
 
-![CeDiRNet-3DoF: detections ICRA 2023!](https://box.vicos.si/skokec/rtfm/demo-videos/detection_set.png "Detections of ICRA 2023 Competition")
+![CeDiRNet-3DoF: detections ICRA 2023!](https://data.vicos.si/skokec/rtfm/demo-videos/detection_set.png "Detections of ICRA 2023 Competition")
 
-| ![CeDiRNet-3DoF: detections ICRA 2023!](https://box.vicos.si/skokec/rtfm/demo-videos/krpa1.gif "Detections of ICRA 2023 Competition") | ![CeDiRNet-3DoF: detections ICRA 2023!](https://box.vicos.si/skokec/rtfm/demo-videos/krpa2.gif "Detections of ICRA 2023 Competition") | ![CeDiRNet-3DoF: detections ICRA 2023!](https://box.vicos.si/skokec/rtfm/demo-videos/krpa3.gif "Detections of ICRA 2023 Competition") |
+| ![CeDiRNet-3DoF: detections ICRA 2023!](https://data.vicos.si/skokec/rtfm/demo-videos/krpa1.gif "Detections of ICRA 2023 Competition") | ![CeDiRNet-3DoF: detections ICRA 2023!](https://data.vicos.si/skokec/rtfm/demo-videos/krpa2.gif "Detections of ICRA 2023 Competition") | ![CeDiRNet-3DoF: detections ICRA 2023!](https://data.vicos.si/skokec/rtfm/demo-videos/krpa3.gif "Detections of ICRA 2023 Competition") |
 |:---:|:---:|:---:|
 ## Citation
 
@@ -37,11 +37,11 @@ If using CeDiRNet-3DoF or ViCoS Towel Dataset please cite our paper using the fo
  
 | Model | Backbone | Input modalaties | Training datasets | Performance (F1@20px) | DOWNLOAD | 
 | ----- | ---------------- | ---------------- | ----------------- | ---- | ---- |
-| CeDiRNet-3DoF | ConvNext-L | RGB | ViCoS Towel Dataset + MuJoCo | 78.4% | [MODEL](https://box.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-L-RGB.pth) |
-| CeDiRNet-3DoF | ConvNext-L | RGB-D | ViCoS Towel Dataset + MuJoCo | 81.4% | [MODEL](https://box.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-L-RGB-D.pth) |
-| CeDiRNet-3DoF | ConvNext-B | RGB | ViCoS Towel Dataset + MuJoCo | 78.0% | [MODEL](https://box.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-B-RGB.pth) |
-| CeDiRNet-3DoF | ConvNext-B | RGB-D | ViCoS Towel Dataset + MuJoCo | 80.8% | [MODEL](https://box.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-B-RGB-D.pth) |
-| CeDiRNet-3DoF | Localization network only | RGB | Synthetic | - |[MODEL](https://box.vicos.si/skokec/rtfm/CeDiRNet-3DoF/localization_checkpoint.pth) |
+| CeDiRNet-3DoF | ConvNext-L | RGB | ViCoS Towel Dataset + MuJoCo | 78.4% | [MODEL](https://data.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-L-RGB.pth) |
+| CeDiRNet-3DoF | ConvNext-L | RGB-D | ViCoS Towel Dataset + MuJoCo | 81.4% | [MODEL](https://data.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-L-RGB-D.pth) |
+| CeDiRNet-3DoF | ConvNext-B | RGB | ViCoS Towel Dataset + MuJoCo | 78.0% | [MODEL](https://data.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-B-RGB.pth) |
+| CeDiRNet-3DoF | ConvNext-B | RGB-D | ViCoS Towel Dataset + MuJoCo | 80.8% | [MODEL](https://data.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-B-RGB-D.pth) |
+| CeDiRNet-3DoF | Localization network only | RGB | Synthetic | - |[MODEL](https://data.vicos.si/skokec/rtfm/CeDiRNet-3DoF/localization_checkpoint.pth) |
 | [DINO](https://github.com/IDEA-Research/DINO) | ConvNext-B | RGB | ViCoS Towel Dataset + MuJoCo | 72.7% | - |
 | [DeformDETR](https://github.com/fundamentalvision/Deformable-DETR) | ConvNext-B | RGB | ViCoS Towel Dataset + MuJoCo | 71.6% | - |
 | [Mask R-CNN](https://github.com/facebookresearch/detectron2) | ResNext101 | RGB | ViCoS Towel Dataset + MuJoCo | 68.3% | - |

@@ -2,7 +2,7 @@
 
 # Define the URLs for the models
 LOCALOZATION_MODEL=(
-    "https://box.vicos.si/skokec/rtfm/CeDiRNet-3DoF/localization_checkpoint.pth"
+    "https://data.vicos.si/skokec/rtfm/CeDiRNet-3DoF/localization_checkpoint.pth"
 )
 
 # Get the directory where the script is located
