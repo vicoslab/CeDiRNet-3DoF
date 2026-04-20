@@ -2,10 +2,10 @@
 
 # Define the URLs for the models
 MODELS=(
-    "https://box.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-L-RGB.pth"
-    "https://box.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-L-RGB-D.pth"
-    "https://box.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-B-RGB.pth"
-    "https://box.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-B-RGB-D.pth"
+    "https://data.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-L-RGB.pth"
+    "https://data.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-L-RGB-D.pth"
+    "https://data.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-B-RGB.pth"
+    "https://data.vicos.si/skokec/rtfm/CeDiRNet-3DoF/ConvNext-B-RGB-D.pth"
 )
 
 # Get the directory where the script is located
