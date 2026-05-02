@@ -5,6 +5,7 @@
   "display_to_file_only": "True",
   "autoadjust_figure_size": "True",
   "score_thr_final": 0.75,
+  "size": [768, 768],
   "num_vector_fields": 5,
   "model": {
     "name": "fpn",

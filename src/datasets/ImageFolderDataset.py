@@ -12,14 +12,27 @@ from utils.transforms import Padding, ToTensor
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
+def _normalize_im_size(im_size):
+    if im_size is None:
+        return None
+    if isinstance(im_size, int):
+        im_size = (im_size, im_size)
+    if len(im_size) != 2:
+        raise ValueError("im_size must be an int or a 2-item tuple/list in (width, height) order")
+    im_size = tuple(int(v) for v in im_size)
+    if im_size[0] <= 0 or im_size[1] <= 0:
+        raise ValueError("im_size values must be positive")
+    return im_size
+
 class ImageFolderDataset(Dataset):
 
-    def __init__(self, root_dir='./', pattern='*.jpg', depth_dir=None, resize_factor=None, use_depth=False):
+    def __init__(self, root_dir='./', pattern='*.jpg', depth_dir=None, resize_factor=None, im_size=None, use_depth=False):
 
         print('ImageFolderDataset created')
 
         self.use_depth = use_depth
         self.resize_factor = resize_factor
+        self.im_size = _normalize_im_size(im_size)
 
         # get image and instance list
         image_list = glob.glob(os.path.join(root_dir, pattern))
@@ -46,10 +59,14 @@ class ImageFolderDataset(Dataset):
         image = Image.open(self.image_list[index])
         im_size = image.size
 
-        if self.resize_factor is not None:
+        if self.im_size is not None:
+            im_size = self.im_size
+        elif self.resize_factor is not None:
             im_size = int(image.size[0] * self.resize_factor), int(image.size[1] * self.resize_factor)
 
-        if self.resize_factor is not None and self.resize_factor != 1.0:
+        needs_resize = im_size != image.size
+
+        if needs_resize:
             image = image.resize(im_size, Image.BILINEAR)
 
         sample = dict(image=image,
@@ -67,7 +84,7 @@ class ImageFolderDataset(Dataset):
             assert os.path.exists(depth_fn), f"Depth file '{depth_fn}' missing"
             depth = np.load(depth_fn)
             
-            if self.resize_factor is not None and self.resize_factor != 1.0:
+            if needs_resize:
                 import cv2
                 depth = cv2.resize(depth,im_size)
                 

@@ -170,7 +170,8 @@ class CeDiRNetInfer:
         ###################################################################################################
         # set dataset
         dataset = ImageFolderDataset(root_dir=args['input_folder'], pattern=args['img_pattern'],
-                                    depth_dir=args.get('depth_folder'), use_depth=args['model']['kwargs']['use_depth'])
+                                    depth_dir=args.get('depth_folder'), im_size=args.get('size'),
+                                    use_depth=args['model']['kwargs']['use_depth'])
 
         dataset_it = torch.utils.data.DataLoader(
             dataset, batch_size=1, shuffle=False, drop_last=False, num_workers=0,
